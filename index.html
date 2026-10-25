@@ -1,0 +1,2469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Fourie &amp; Koko — 404 Sanctuary &amp; 3D Baby Panda Companion</title>
+  <meta name="description" content="Visit Fourie's 404 Lost &amp; Found Sanctuary and step inside Koko's cozy 3D sunset nursery with real-time synthesized baby giggles and playful interactions." />
+  <meta property="og:title" content="Fourie &amp; Koko — 404 Sanctuary &amp; 3D Baby Panda Companion" />
+  <meta property="og:description" content="Visit Fourie's 404 Lost &amp; Found Sanctuary and step inside Koko's cozy 3D sunset nursery with real-time synthesized baby giggles and playful interactions." />
+
+  <!-- Google Fonts: Fredoka & Plus Jakarta Sans (2-Font Rule) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+
+
+  <style>
+    /* ==========================================================================
+       1. THEME DESIGN SYSTEM & COLOR TOKENS
+       ========================================================================== */
+    :root {
+      --bg-dark: #07080F;
+      --card-bg: rgba(18, 20, 34, 0.82);
+      --card-border: rgba(135, 145, 215, 0.22);
+      --card-border-active: rgba(125, 135, 255, 0.85);
+      --accent-purple: #5D5FEF;
+      --accent-purple-glow: rgba(93, 95, 239, 0.55);
+      --accent-cyan: #38BDF8;
+      --accent-pink: #F43F5E;
+      --accent-gradient: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+      --text-white: #FFFFFF;
+      --text-dim: #A6ACCD;
+      --text-sub: #7880A4;
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Fredoka', 'Quicksand', sans-serif;
+
+      /* Cute Warm Storybook Palette */
+      --sanctuary-cream: #FFF9F6;
+      --sanctuary-blush: #FFF0F5;
+      --sanctuary-surface: rgba(255, 255, 255, 0.90);
+      --sanctuary-inset: #FFF6FA;
+      --sanctuary-border: rgba(232, 121, 169, 0.20);
+      --sanctuary-border-hover: rgba(232, 121, 169, 0.45);
+      --cocoa-ink: #362238;
+      --cocoa-body: #664C69;
+      --cocoa-muted: #9A7D9E;
+      --rose-accent: #E85D95;
+      --rose-deep: #C43D74;
+      --peach-accent: #F49068;
+      --honey-accent: #E59838;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-dark);
+      font-family: var(--font-main);
+      color: var(--text-white);
+    }
+
+    /* WebGL 3D Canvas */
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+      outline: none;
+      cursor: default;
+      transition: filter 0.8s ease;
+    }
+    #webgl-canvas.blurred {
+      filter: blur(14px) brightness(0.65);
+    }
+
+    /* ==========================================================================
+       2. FOURIE 404 SANCTUARY — COZY STORYBOOK LANDING PAGE
+       ========================================================================== */
+    .fourie-landing-portal {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 224, 236, 0.75) 0%, transparent 45%),
+        radial-gradient(circle at 82% 8%, rgba(255, 236, 209, 0.75) 0%, transparent 48%),
+        radial-gradient(circle at 50% 65%, rgba(243, 232, 255, 0.55) 0%, transparent 55%),
+        linear-gradient(180deg, #FFFDFB 0%, #FFF6F9 48%, #FDF2F8 100%);
+      color: var(--cocoa-ink);
+      font-family: var(--font-main);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.75s;
+      scroll-behavior: smooth;
+    }
+    .fourie-landing-portal.hidden {
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-24px) scale(1.02);
+      pointer-events: none;
+    }
+
+    /* Soft Pastel Cloud & Sunbeam Backdrop */
+    .portal-bg-decor {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .bg-sun-glow {
+      position: absolute;
+      top: -120px;
+      right: 8%;
+      width: 560px;
+      height: 560px;
+      background: radial-gradient(circle, rgba(255, 223, 186, 0.55) 0%, rgba(255, 198, 218, 0.22) 50%, transparent 72%);
+      filter: blur(55px);
+      border-radius: 50%;
+    }
+    .bg-violet-glow {
+      position: absolute;
+      top: 340px;
+      left: -120px;
+      width: 540px;
+      height: 540px;
+      background: radial-gradient(circle, rgba(252, 216, 235, 0.65) 0%, rgba(233, 213, 255, 0.25) 55%, transparent 72%);
+      filter: blur(65px);
+      border-radius: 50%;
+    }
+
+    /* Sticky Navigation Header — Strict 3-Zone Top Bar Contract */
+    .portal-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
+      background: rgba(255, 252, 250, 0.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--sanctuary-border);
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+    }
+    .brand-wordmark {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color 0.18s ease;
+    }
+    .brand-wordmark:hover {
+      color: var(--rose-accent);
+    }
+
+    .nav-links-row {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-link {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--cocoa-body);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    .nav-link:hover {
+      color: var(--rose-deep);
+      border-bottom-color: rgba(232, 93, 149, 0.45);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .btn-main-room-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #EE6B9E 0%, #F4936A 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 9999px;
+      padding: 12px 26px;
+      font-family: var(--font-display);
+      font-size: 0.96rem;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      box-shadow: 0 10px 24px -6px rgba(238, 107, 158, 0.48);
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .btn-main-room-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px -6px rgba(238, 107, 158, 0.62);
+    }
+    .btn-main-room-cta:active {
+      transform: scale(0.98);
+    }
+    .cta-arrow {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.18s ease;
+    }
+    .btn-main-room-cta:hover .cta-arrow {
+      transform: translateX(3px);
+    }
+
+    /* Hero Section — 2-Column Balanced Storybook Split */
+    .portal-hero {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 52px 32px 44px 32px;
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      align-items: stretch;
+      gap: 48px;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .hero-kicker {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .hero-kicker-sep {
+      color: var(--cocoa-muted);
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      line-height: 1.12;
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      letter-spacing: -0.015em;
+      text-wrap: balance;
+      max-width: 16ch;
+    }
+    .highlight-pink {
+      color: var(--rose-accent);
+    }
+    .highlight-amber {
+      color: var(--honey-accent);
+    }
+    .hero-desc {
+      font-size: 1.04rem;
+      line-height: 1.72;
+      color: var(--cocoa-body);
+      max-width: 58ch;
+    }
+    .hero-desc strong {
+      color: var(--cocoa-ink);
+      font-weight: 700;
+    }
+
+    /* Interactive Segmented Chapter & Audio Controls */
+    .hero-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      padding-top: 4px;
+    }
+    .chapter-segmented-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px;
+      background: var(--sanctuary-inset);
+      border: 1px solid var(--sanctuary-border);
+      border-radius: 18px;
+    }
+    .chapter-seg-link {
+      padding: 8px 14px;
+      border-radius: 13px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cocoa-body);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .chapter-seg-link:hover {
+      background: #FFFFFF;
+      color: var(--rose-deep);
+    }
+
+    .audio-toggles-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 14px;
+      background: var(--sanctuary-surface);
+      border: 1px solid var(--sanctuary-border);
+      color: var(--cocoa-body);
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+    }
+    .icon-toggle-btn:hover {
+      background: #FFFFFF;
+      color: var(--rose-deep);
+      border-color: var(--sanctuary-border-hover);
+      transform: translateY(-1px);
+    }
+    .icon-toggle-btn.active {
+      background: var(--rose-accent);
+      border-color: var(--rose-accent);
+      color: #FFFFFF;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--sanctuary-surface);
+      border: 1px solid var(--sanctuary-border);
+      color: var(--cocoa-ink);
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-family: var(--font-display);
+      font-size: 0.94rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .btn-hero-secondary:hover {
+      background: #FFFFFF;
+      border-color: var(--sanctuary-border-hover);
+      transform: translateY(-2px);
+    }
+    .btn-hero-secondary svg {
+      width: 15px;
+      height: 15px;
+      color: var(--rose-accent);
+    }
+
+    /* Hero Right Storybook Portrait Frame */
+    .hero-visual-card-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+    }
+    .hero-visual-card {
+      position: relative;
+      border-radius: 36px;
+      background: var(--sanctuary-surface);
+      border: 1px solid var(--sanctuary-border);
+      box-shadow: 0 24px 54px -14px rgba(196, 61, 116, 0.14);
+      padding: 20px;
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      max-width: 410px;
+      width: 100%;
+    }
+    .hero-visual-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sanctuary-border-hover);
+    }
+    .hero-art-frame {
+      width: 100%;
+      flex: 1;
+      border-radius: 24px;
+      overflow: hidden;
+      background: #FFF0F5;
+      display: flex;
+    }
+    .hero-art-img {
+      width: 100%;
+      height: 100%;
+      max-height: 430px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hero-visual-card:hover .hero-art-img {
+      transform: scale(1.02);
+    }
+    .hero-card-caption {
+      margin-top: 16px;
+      padding: 4px 6px 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .caption-primary {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--cocoa-ink);
+    }
+    .caption-action {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--rose-deep);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    /* Cozy Sound & Mood Box Strip (Full-Width 4-Column Row Below Hero) */
+    .soundbox-strip-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 32px 36px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .soundbox-container {
+      background: var(--sanctuary-surface);
+      border: 1px solid var(--sanctuary-border);
+      border-radius: 28px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .soundbox-top-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-bottom: 1px solid rgba(232, 121, 169, 0.12);
+      padding-bottom: 14px;
+    }
+    .soundbox-heading-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .soundbox-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--cocoa-ink);
+    }
+    .soundbox-sub {
+      font-size: 0.84rem;
+      color: var(--cocoa-muted);
+      font-weight: 500;
+    }
+    .soundbox-feedback {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--rose-deep);
+      font-variant-numeric: tabular-nums;
+    }
+    .soundbox-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .soundbox-btn {
+      background: var(--sanctuary-inset);
+      border: 1px solid rgba(232, 121, 169, 0.16);
+      border-radius: 18px;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), background 0.18s ease, border-color 0.18s ease;
+    }
+    .soundbox-btn:hover {
+      background: #FFFFFF;
+      border-color: var(--sanctuary-border-hover);
+      transform: translateY(-2px);
+    }
+    .soundbox-btn:active {
+      transform: scale(0.98);
+    }
+    .soundbox-btn-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--cocoa-ink);
+    }
+    .soundbox-btn-top svg {
+      width: 15px;
+      height: 15px;
+      color: var(--rose-accent);
+      flex-shrink: 0;
+    }
+    .soundbox-btn-desc {
+      font-size: 0.78rem;
+      color: var(--cocoa-body);
+      line-height: 1.4;
+    }
+
+    /* Chronicles Section */
+    .portal-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .section-header-group {
+      text-align: center;
+      margin-bottom: 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-kicker {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      letter-spacing: 0.02em;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 3vw, 2.45rem);
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--cocoa-body);
+      max-width: 60ch;
+      line-height: 1.65;
+    }
+
+    /* 4 Story Cards Grid (Balanced 2x2 Layout) */
+    .story-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+    .story-card {
+      background: var(--sanctuary-surface);
+      border-radius: 30px;
+      border: 1px solid var(--sanctuary-border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+    }
+    .story-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--sanctuary-border-hover);
+    }
+    .story-card-art-wrap {
+      width: 100%;
+      height: 200px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #FFF0F5;
+    }
+    .story-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+    }
+    .story-card:hover .story-card-img {
+      transform: scale(1.03);
+    }
+    .story-card-kicker {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      letter-spacing: 0.01em;
+      padding-top: 2px;
+    }
+    .story-card-title {
+      font-family: var(--font-display);
+      font-size: 1.32rem;
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      line-height: 1.25;
+      text-wrap: balance;
+    }
+    .story-card-desc {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--cocoa-body);
+    }
+    .story-quote-box {
+      background: var(--sanctuary-inset);
+      border: 1px solid rgba(232, 121, 169, 0.16);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-size: 0.84rem;
+      line-height: 1.55;
+      color: var(--cocoa-ink);
+      font-style: italic;
+    }
+    .story-meta-line {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--cocoa-muted);
+      margin-top: auto;
+      padding-top: 4px;
+      line-height: 1.5;
+    }
+    .card-audio-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid var(--sanctuary-border);
+      border-radius: 16px;
+      padding: 10px 16px;
+      font-family: var(--font-display);
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--cocoa-ink);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+      width: 100%;
+    }
+    .card-audio-btn:hover {
+      border-color: var(--rose-accent);
+      color: var(--rose-deep);
+      transform: translateY(-1px);
+    }
+    .card-audio-btn svg {
+      width: 15px;
+      height: 15px;
+      color: var(--rose-accent);
+    }
+
+    /* Nursery Highlights Asymmetric Bento Grid */
+    .features-bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .feature-item-card {
+      background: var(--sanctuary-surface);
+      border-radius: 26px;
+      border: 1px solid var(--sanctuary-border);
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
+    }
+    .feature-item-card.span-two {
+      grid-column: span 2;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 243, 248, 0.94) 100%);
+    }
+    .feature-item-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--sanctuary-border-hover);
+    }
+    .feature-num-kicker {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+      font-variant-numeric: tabular-nums;
+    }
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      line-height: 1.3;
+    }
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--cocoa-body);
+      line-height: 1.62;
+      max-width: 62ch;
+    }
+    .feature-meta {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--cocoa-muted);
+      padding-top: 4px;
+    }
+
+    /* Grand Banner CTA */
+    .portal-banner-cta {
+      max-width: 1200px;
+      margin: 16px auto 64px auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .banner-inner {
+      background: linear-gradient(135deg, #FFF0F6 0%, #FDE8F1 52%, #F9E6FF 100%);
+      border: 1px solid rgba(232, 121, 169, 0.28);
+      border-radius: 36px;
+      padding: 56px 40px;
+      text-align: center;
+      color: var(--cocoa-ink);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner-kicker {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--rose-deep);
+    }
+    .banner-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.4vw, 2.7rem);
+      font-weight: 700;
+      color: var(--cocoa-ink);
+      letter-spacing: -0.01em;
+      text-wrap: balance;
+    }
+    .banner-subtitle {
+      font-size: 1.02rem;
+      color: var(--cocoa-body);
+      max-width: 56ch;
+      line-height: 1.65;
+    }
+    .btn-banner-cta {
+      padding: 14px 34px;
+      font-size: 1rem;
+      margin-top: 4px;
+    }
+
+    /* Portal Footer */
+    .portal-footer {
+      border-top: 1px solid var(--sanctuary-border);
+      background: rgba(255, 252, 250, 0.75);
+      padding: 28px 32px;
+      text-align: center;
+      font-size: 0.84rem;
+      color: var(--cocoa-body);
+      position: relative;
+      z-index: 1;
+    }
+    .portal-footer-sub {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: var(--cocoa-muted);
+    }
+
+    /* In-Room Return Button */
+    .btn-back-story {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 30px;
+      padding: 8px 18px;
+      color: var(--text-white);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-back-story:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: var(--card-border-active);
+      transform: translateY(-2px);
+    }
+    .btn-back-story svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Mobile Navigation Toggle & Collapsible Drawer (Landing Page) */
+    .btn-mobile-nav-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--sanctuary-surface);
+      border: 1px solid var(--sanctuary-border);
+      color: var(--cocoa-ink);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+    .btn-mobile-nav-toggle:hover {
+      background: #FFFFFF;
+      border-color: var(--sanctuary-border-hover);
+    }
+    .mobile-nav-drawer {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px 20px 16px 20px;
+      background: rgba(255, 252, 250, 0.96);
+      border-bottom: 1px solid var(--sanctuary-border);
+    }
+    .mobile-nav-drawer.open {
+      display: flex;
+    }
+    .mobile-nav-link {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--cocoa-ink);
+      text-decoration: none;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+    .mobile-nav-link:hover {
+      background: var(--sanctuary-inset);
+      color: var(--rose-deep);
+    }
+
+    /* Keyboard Focus & Reduced Motion Accessibility */
+    button:focus-visible,
+    a:focus-visible,
+    [role="button"]:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Ultrawide & Large Desktop Scaling (1441px+) */
+    @media (min-width: 1441px) {
+      .header-inner,
+      .portal-hero,
+      .soundbox-strip-section,
+      .portal-section,
+      .portal-banner-cta {
+        max-width: 1340px;
+      }
+      .portal-hero {
+        gap: 64px;
+        padding-top: 64px;
+        padding-bottom: 56px;
+      }
+      .hero-visual-card {
+        max-width: 440px;
+      }
+    }
+
+    /* Small Laptops & Tablets (<= 1024px) */
+    @media (max-width: 1024px) {
+      .portal-hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 36px 24px 32px 24px;
+        gap: 32px;
+      }
+      .hero-content {
+        align-items: center;
+      }
+      .hero-title {
+        max-width: 20ch;
+      }
+      .hero-kicker {
+        justify-content: center;
+      }
+      .hero-controls-bar {
+        justify-content: center;
+      }
+      .hero-cta-group {
+        justify-content: center;
+      }
+      .soundbox-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .story-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .features-bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .feature-item-card.span-two {
+        grid-column: span 2;
+      }
+      .nav-links-row {
+        display: none;
+      }
+      .btn-mobile-nav-toggle {
+        display: inline-flex;
+      }
+    }
+
+    /* Tablets & Large Phones (<= 768px) */
+    @media (max-width: 768px) {
+      .story-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      .features-bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .feature-item-card.span-two {
+        grid-column: span 1;
+      }
+    }
+
+    /* Standard & Small Phones (<= 640px) */
+    @media (max-width: 640px) {
+      .soundbox-grid {
+        grid-template-columns: 1fr;
+      }
+      .soundbox-container {
+        padding: 18px 16px;
+        border-radius: 22px;
+      }
+      .chapter-segmented-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+      }
+      .chapter-seg-link {
+        flex: 1 1 auto;
+        text-align: center;
+        padding: 8px 10px;
+        font-size: 0.78rem;
+      }
+      .audio-toggles-group {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .icon-toggle-btn {
+        min-height: 44px;
+      }
+      .hero-cta-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .hero-cta-group .btn-main-room-cta,
+      .hero-cta-group .btn-hero-secondary {
+        width: 100%;
+        justify-content: center;
+        min-height: 46px;
+      }
+    }
+
+    /* Extra-Small Phones (320px–375px) */
+    @media (max-width: 380px) {
+      .header-inner {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .brand-wordmark {
+        font-size: 1.05rem;
+      }
+      .header-actions .btn-main-room-cta {
+        padding: 9px 14px;
+        font-size: 0.8rem;
+      }
+      .hero-title {
+        font-size: clamp(1.75rem, 7.5vw, 2.2rem);
+      }
+      .hero-desc {
+        font-size: 0.92rem;
+      }
+      .hero-visual-card {
+        padding: 14px;
+        border-radius: 24px;
+      }
+      .hero-card-caption {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
+
+    /* ==========================================================================
+       3. IN-ROOM FIXED UI OVERLAY (RESPONSIVE FOR ALL DEVICES)
+       ========================================================================== */
+    .ui-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: max(16px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+      transition: opacity 0.5s ease;
+    }
+
+    .interactive {
+      pointer-events: auto;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+      flex-wrap: nowrap;
+      z-index: 25;
+    }
+
+    /* AI Koko Profile Card */
+    .profile-card {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 40px;
+      padding: 6px 16px 6px 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      min-width: 0;
+    }
+    .profile-card:hover {
+      border-color: var(--card-border-active);
+      transform: translateY(-2px);
+    }
+
+    .profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2E324A 0%, #1A1C2C 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+      flex-shrink: 0;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .profile-name {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-white);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .profile-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #A6ACCD;
+      white-space: nowrap;
+    }
+
+    /* Top Right: "Tickle Koko" Sound Trigger */
+    .btn-top-tickle {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      border-radius: 40px;
+      padding: 6px 18px 6px 8px;
+      color: var(--text-white);
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+    .btn-top-tickle:hover {
+      border-color: var(--card-border-active);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px var(--accent-purple-glow);
+    }
+    .top-tickle-icon-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.45);
+      flex-shrink: 0;
+    }
+
+    .top-tickle-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+    .top-tickle-label {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-white);
+      white-space: nowrap;
+    }
+    .top-tickle-sub {
+      font-size: 0.71rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    /* 3D Anchored Speech Bubble (Panda thoughts/giggles/multilingual speech) */
+    #speech-bubble {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      background: #FFFDFB;
+      color: #1A1C29;
+      padding: 11px 20px;
+      border-radius: 24px;
+      font-size: clamp(0.84rem, 2.2vw, 0.96rem);
+      font-weight: 600;
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.45), 0 3px 10px rgba(0, 0, 0, 0.15);
+      border: 2px solid rgba(236, 72, 153, 0.22);
+      pointer-events: none;
+      z-index: 25;
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      max-width: min(350px, calc(100vw - 32px));
+      white-space: normal;
+      word-break: break-word;
+      text-align: center;
+      line-height: 1.38;
+    }
+    #speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -9px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-width: 9px 9px 0 9px;
+      border-style: solid;
+      border-color: #FFFDFB transparent transparent transparent;
+    }
+    #speech-bubble.visible {
+      opacity: 1;
+      transform: translate(-50%, -112%);
+    }
+    .bubble-text {
+      display: inline-block;
+      color: #141724;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: clamp(0.84rem, 2.2vw, 0.96rem);
+    }
+
+    /* Left Circular Buttons Column (No container block) */
+    .left-actions-panel {
+      position: absolute;
+      left: max(20px, env(safe-area-inset-left));
+      top: 52%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 9px;
+      background: transparent;
+      border: none;
+      padding: 0;
+      width: auto;
+      box-shadow: none;
+      z-index: 22;
+    }
+
+    .left-circle-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .circle-action-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.38);
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+      padding: 0;
+    }
+    .circle-action-btn:hover {
+      color: var(--text-white);
+      border-color: var(--card-border-active);
+      transform: scale(1.08);
+      background: rgba(30, 34, 56, 0.92);
+    }
+    .circle-action-btn.active {
+      background: var(--accent-gradient);
+      color: var(--text-white);
+      border-color: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 8px 24px var(--accent-purple-glow);
+    }
+    .circle-action-btn.listening {
+      background: linear-gradient(135deg, #EC4899 0%, #6366F1 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 8px 26px rgba(236, 72, 153, 0.55);
+    }
+    .circle-action-btn.processing {
+      background: linear-gradient(135deg, #F59E0B 0%, #6366F1 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 8px 26px rgba(245, 158, 11, 0.48);
+    }
+    .circle-action-btn.speaking {
+      background: linear-gradient(135deg, #38BDF8 0%, #6366F1 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.55);
+      box-shadow: 0 8px 26px rgba(56, 189, 248, 0.48);
+    }
+    .circle-action-btn.error {
+      background: linear-gradient(135deg, #F43F5E 0%, #9F1239 100%);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.45);
+    }
+
+    .circle-btn-tooltip {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--text-white);
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.32);
+      white-space: nowrap;
+      opacity: 0;
+      transform: translateX(-6px);
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+    .left-circle-item:hover .circle-btn-tooltip,
+    .left-circle-item:focus-within .circle-btn-tooltip {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Compact Floating Popover for Dress-Up & Baby Care Circular Buttons */
+    .left-popover-card {
+      position: absolute;
+      left: 56px;
+      bottom: -8px;
+      width: 260px;
+      max-width: calc(100vw - 84px);
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border-active);
+      border-radius: 22px;
+      padding: 12px 14px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-8px) scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.2s;
+      z-index: 35;
+    }
+    .left-popover-card.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0) scale(1);
+      pointer-events: auto;
+    }
+
+    /* Right Control Column */
+    .right-tools-col {
+      position: absolute;
+      right: max(20px, env(safe-area-inset-right));
+      top: 48%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      z-index: 20;
+    }
+    .tool-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .tool-item:hover {
+      transform: translateX(-4px);
+    }
+    .tool-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 5px 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      transition: color 0.2s ease, border-color 0.2s ease;
+      white-space: nowrap;
+    }
+    .tool-item:hover .tool-label {
+      color: var(--text-white);
+      border-color: var(--card-border-active);
+    }
+    .tool-btn {
+      width: 44px;
+      height: 44px;
+      min-width: 44px;
+      min-height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--text-white);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+    .tool-item.active .tool-btn {
+      background: var(--accent-gradient);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 24px var(--accent-purple-glow);
+    }
+    .tool-item:hover .tool-btn {
+      transform: scale(1.08);
+      border-color: var(--card-border-active);
+    }
+
+    .dressup-header,
+    .care-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 9px;
+      gap: 8px;
+    }
+    .dressup-title,
+    .care-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dressup-status {
+      font-size: 0.7rem;
+      color: #A78BFA;
+      font-weight: 600;
+    }
+    .care-status {
+      font-size: 0.7rem;
+      color: #F472B6;
+      font-weight: 600;
+    }
+    .dressup-buttons-grid,
+    .care-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+    }
+    .dressup-btn,
+    .care-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      min-height: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 13px;
+      padding: 7px 8px;
+      color: var(--text-dim);
+      font-family: var(--font-main);
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+    .dressup-btn:hover,
+    .care-btn:hover {
+      background: rgba(93, 95, 239, 0.24);
+      border-color: var(--accent-purple);
+      color: var(--text-white);
+      transform: translateY(-1px);
+    }
+    .dressup-btn.active {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.85) 0%, rgba(99, 102, 241, 0.88) 100%);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.35);
+    }
+
+    /* ==========================================================================
+       4. MULTI-DEVICE RESPONSIVE ADAPTATIONS (TABLETS, PHONES & LANDSCAPE)
+       ========================================================================== */
+    /* Tablets & Short Height Viewports: 2-Column Left Circular Grid so 9 buttons never overflow vertically */
+    @media (max-width: 1024px), (max-height: 650px) {
+      .left-actions-panel {
+        display: grid;
+        grid-template-columns: repeat(2, 44px);
+        gap: 8px;
+        top: 54%;
+      }
+      .circle-btn-tooltip {
+        display: none;
+      }
+      .left-popover-card {
+        position: fixed;
+        left: 120px;
+        bottom: 24px;
+        width: min(270px, calc(100vw - 140px));
+      }
+    }
+
+    /* Tablets & Mobile (<= 768px) */
+    @media (max-width: 768px) {
+      .ui-overlay {
+        padding: max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      }
+      .top-bar {
+        gap: 6px;
+      }
+      .profile-card {
+        padding: 4px 10px 4px 6px;
+        gap: 6px;
+        min-height: 40px;
+      }
+      .profile-avatar, .top-tickle-icon-circle {
+        width: 30px;
+        height: 30px;
+      }
+      .profile-name, .top-tickle-label {
+        font-size: 0.78rem;
+      }
+      .profile-status, .top-tickle-sub {
+        display: none;
+      }
+      .btn-back-story {
+        padding: 6px 12px;
+        font-size: 0.74rem;
+        min-height: 40px;
+      }
+      .btn-top-tickle {
+        padding: 4px 10px 4px 6px;
+        gap: 6px;
+        min-height: 40px;
+      }
+      .tool-label {
+        display: none;
+      }
+      /* Landing page mobile refinements */
+      .header-inner {
+        padding: 10px 16px;
+      }
+      .portal-hero {
+        padding: 24px 16px 20px 16px;
+        gap: 24px;
+      }
+      .soundbox-strip-section, .portal-section, .portal-banner-cta {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .banner-inner {
+        padding: 32px 20px;
+      }
+    }
+
+    /* Mobile Phones (320px–540px): Bottom-Docked Circular Action Bar so Koko Panda is 100% Unobstructed */
+    @media (max-width: 540px) {
+      .left-actions-panel {
+        position: fixed;
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: max(12px, env(safe-area-inset-bottom));
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 7px;
+        width: calc(100vw - 20px);
+        max-width: 340px;
+        z-index: 26;
+      }
+      .circle-action-btn {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        min-height: 44px;
+      }
+      .left-popover-card {
+        position: fixed;
+        left: 50%;
+        bottom: calc(max(12px, env(safe-area-inset-bottom)) + 104px);
+        transform: translateX(-50%) scale(0.96);
+        width: min(290px, calc(100vw - 24px));
+        max-width: calc(100vw - 24px);
+      }
+      .left-popover-card.open {
+        transform: translateX(-50%) scale(1);
+      }
+      .right-tools-col {
+        right: max(10px, env(safe-area-inset-right));
+        top: 68px;
+        transform: none;
+        gap: 7px;
+      }
+      .tool-btn {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+      }
+      /* Compact top-bar on 320px–375px phones so all 3 items fit on one line without overflow */
+      .profile-name {
+        max-width: 72px;
+      }
+      .btn-back-story span {
+        max-width: 92px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    /* Bottom Talk-to-Koko (Poco) Chat & Voice Dock */
+    .koko-chat-dock {
+      position: fixed;
+      left: 50%;
+      bottom: max(16px, env(safe-area-inset-bottom));
+      transform: translateX(-50%);
+      width: min(560px, calc(100vw - 140px));
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 28;
+      pointer-events: auto;
+    }
+    .koko-quick-chips {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .koko-chip-btn {
+      background: rgba(18, 20, 34, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(135, 145, 215, 0.28);
+      color: #E2E8F0;
+      border-radius: 9999px;
+      padding: 5px 12px;
+      font-family: var(--font-main);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+    .koko-chip-btn:hover {
+      background: rgba(93, 95, 239, 0.35);
+      border-color: var(--card-border-active);
+      color: #FFFFFF;
+      transform: translateY(-1px);
+    }
+    .koko-chat-form {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--card-border);
+      border-radius: 9999px;
+      padding: 6px 8px 6px 16px;
+      box-shadow: 0 12px 34px rgba(0, 0, 0, 0.48);
+      transition: border-color 0.2s ease;
+    }
+    .koko-chat-form:focus-within {
+      border-color: var(--card-border-active);
+    }
+    .koko-chat-input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-white);
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      font-weight: 500;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+    .koko-chat-input::placeholder {
+      color: var(--text-sub);
+    }
+    .koko-dock-btn {
+      width: 38px;
+      height: 38px;
+      min-width: 38px;
+      min-height: 38px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+    .koko-dock-btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      transform: scale(1.05);
+    }
+    .koko-dock-btn.send-btn {
+      background: linear-gradient(135deg, #EC4899 0%, #6366F1 100%);
+      border-color: rgba(255, 255, 255, 0.32);
+    }
+    .koko-dock-btn.mic-active {
+      background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);
+      box-shadow: 0 0 16px rgba(236, 72, 153, 0.65);
+      border-color: rgba(255, 255, 255, 0.55);
+    }
+    @media (max-width: 768px) {
+      .koko-chat-dock {
+        width: min(480px, calc(100vw - 24px));
+      }
+      .koko-quick-chips {
+        display: none;
+      }
+    }
+    @media (max-width: 540px) {
+      .koko-chat-dock {
+        bottom: calc(max(12px, env(safe-area-inset-bottom)) + 102px);
+        width: calc(100vw - 24px);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fullscreen Three.js WebGL Canvas -->
+  <canvas id="webgl-canvas" class="blurred"></canvas>
+
+  <!-- ==========================================================================
+       FOURIE 404 SANCTUARY — COZY STORYBOOK LANDING PAGE
+       ========================================================================== -->
+  <main class="fourie-landing-portal" id="landing-portal">
+    <!-- Soft Pastel Sunbeam & Cloud Glows -->
+    <div class="portal-bg-decor">
+      <div class="bg-sun-glow"></div>
+      <div class="bg-violet-glow"></div>
+    </div>
+
+    <!-- Sticky Navigation Header — Strict 3-Zone Top Bar Contract -->
+    <header class="portal-header">
+      <div class="header-inner">
+        <!-- Zone 1: Single Clean Wordmark -->
+        <a href="#hero-section" class="brand-wordmark">Fourie Sanctuary</a>
+
+        <!-- Zone 2: Concise Single-Line Navigation Links -->
+        <nav class="nav-links-row" aria-label="Portal Navigation">
+          <a href="#hero-section" class="nav-link">Origin Tale</a>
+          <a href="#soundbox-section" class="nav-link">Nursery Sounds</a>
+          <a href="#chronicles" class="nav-link">The Chronicles</a>
+          <a href="#nursery-features" class="nav-link">3D Nursery</a>
+        </nav>
+
+        <!-- Zone 3: Mobile Menu Button -->
+        <div class="header-actions" style="gap: 10px;">
+          <button type="button" class="btn-mobile-nav-toggle" id="btn-mobile-nav" aria-label="Toggle Navigation Menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Accessible Collapsible Mobile Navigation Menu -->
+      <nav id="mobile-nav-drawer" class="mobile-nav-drawer" aria-label="Mobile Portal Navigation">
+        <a href="#hero-section" class="mobile-nav-link">Origin Tale</a>
+        <a href="#soundbox-section" class="mobile-nav-link">Nursery Sounds</a>
+        <a href="#chronicles" class="mobile-nav-link">The Chronicles</a>
+        <a href="#nursery-features" class="mobile-nav-link">3D Nursery</a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="portal-hero" id="hero-section">
+      <div class="hero-content">
+        <div class="hero-kicker">
+          <span>404 Lost &amp; Found Sanctuary</span>
+          <span class="hero-kicker-sep" aria-hidden="true">·</span>
+          <span>Kuch kho gaya? Maine sambhal ke rakha hai</span>
+        </div>
+
+        <h1 class="hero-title">
+          Fourie, Internet Ke <span class="highlight-pink">404</span> Page Ka <span class="highlight-amber">Bachcha</span>
+        </h1>
+
+        <p class="hero-desc">
+          Jab internet par koi webpage delete ho jaata hai, uski jagah ek narm khaali gap reh jaata hai. Us gap ki chamakti stardust se ek chhota sa pyaara creature paida hota hai: <strong>Fourie</strong>. Wo internet ke <strong>Lost &amp; Found Nursery</strong> me har bhooli hui yaad, purani chat, aur khoye hue panno ko bade pyaar se sambhal ke rakhta hai.
+        </p>
+
+        <div class="hero-controls-bar">
+          <div class="chapter-segmented-nav" role="navigation" aria-label="Story Chapters">
+            <a href="#chap-1" class="chapter-seg-link">01. 404 Se Janam</a>
+            <a href="#chap-2" class="chapter-seg-link">02. Lost &amp; Found</a>
+            <a href="#chap-3" class="chapter-seg-link">03. Lori Ki Mithas</a>
+            <a href="#chap-4" class="chapter-seg-link">04. Koko Ki Dosti</a>
+          </div>
+
+          <div class="audio-toggles-group">
+            <button class="icon-toggle-btn" id="btn-nav-music" title="Toggle Ambient Lullaby" aria-label="Toggle Ambient Lullaby">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+              </svg>
+              <span>Lullaby Music</span>
+            </button>
+            <button class="icon-toggle-btn" id="btn-nav-sound" title="Toggle Baby Sounds" aria-label="Toggle Baby Sounds">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              <span>Baby Voice</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-cta-group">
+          <button class="btn-main-room-cta btn-enter-room" id="btn-hero-enter">
+            <span>Step Inside Koko's Room</span>
+            <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+          <a href="#chronicles" class="btn-hero-secondary">
+            <span>Read Fourie's Story</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-visual-card-wrap">
+        <div class="hero-visual-card" id="hero-art-card" title="Click portrait to hear a gentle baby giggle">
+          <div class="hero-art-frame">
+            <img src="./landing_assets/hero_fourie_art.png" alt="Baby Fourie holding a warm glowing star beside Lost and Found books" class="hero-art-img" referrerpolicy="no-referrer" />
+          </div>
+          <div class="hero-card-caption">
+            <span class="caption-primary">Baby Fourie · Keeper of Lost Stars</span>
+            <span class="caption-action">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              <span>Tap for Giggle</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Full-Width Cozy Nursery Sound & Mood Box Strip -->
+    <section class="soundbox-strip-section" id="soundbox-section">
+      <div class="soundbox-container">
+        <div class="soundbox-top-row">
+          <div class="soundbox-heading-wrap">
+            <h2 class="soundbox-title">Cozy Nursery Sound Box</h2>
+            <span class="soundbox-sub">Preview Koko &amp; Fourie's gentle synthesized voices before stepping inside</span>
+          </div>
+          <span class="soundbox-feedback" id="soundbox-status-text">Select any sound below to listen</span>
+        </div>
+
+        <div class="soundbox-grid">
+          <button type="button" class="soundbox-btn card-audio-btn" data-sound="giggle" data-label="Playing Koko's happy baby giggle">
+            <div class="soundbox-btn-top">
+              <span>01. Happy Giggle</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+            </div>
+            <span class="soundbox-btn-desc">Bubbling toddler laughter when tickled</span>
+          </button>
+
+          <button type="button" class="soundbox-btn card-audio-btn" data-sound="stardust" data-label="Playing soft stardust chime and baby coo">
+            <div class="soundbox-btn-top">
+              <span>02. Stardust Coo</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+              </svg>
+            </div>
+            <span class="soundbox-btn-desc">Warm celestial bell notes and a sweet coo</span>
+          </button>
+
+          <button type="button" class="soundbox-btn card-audio-btn" data-sound="sip" data-label="Playing warm milk bottle sip">
+            <div class="soundbox-btn-top">
+              <span>03. Warm Milk Sip</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 2h8M9 2v3h6V2M8 9l-2 3v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8l-2-3H8z"/>
+              </svg>
+            </div>
+            <span class="soundbox-btn-desc">Cozy snack time sips in the sunset room</span>
+          </button>
+
+          <button type="button" class="soundbox-btn card-audio-btn" data-sound="lullaby" data-label="Playing sleepy cradle chime and gentle yawn">
+            <div class="soundbox-btn-top">
+              <span>04. Sleepy Lullaby</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </div>
+            <span class="soundbox-btn-desc">Soft bedtime melody with a sleepy sigh</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chronicles / 4 Story Chapters Section -->
+    <section class="portal-section" id="chronicles">
+      <div class="section-header-group">
+        <span class="section-kicker">Sanctuary Storybook · Four Chapters</span>
+        <h2 class="section-title">The Chronicles of 404 Sanctuary</h2>
+        <p class="section-subtitle">
+          Discover how vanished webpages, vintage dial-up melodies, and handwritten notes find a warm, quiet home with Fourie and his best friend Koko.
+        </p>
+      </div>
+
+      <div class="story-cards-grid">
+        <!-- Card 1 -->
+        <article class="story-card" id="chap-1">
+          <div class="story-card-art-wrap">
+            <img src="/assets/story/fourie_origin.jpg" alt="Fourie born from pastel stardust in the 404 sky" class="story-card-img" referrerpolicy="no-referrer" />
+          </div>
+          <span class="story-card-kicker">Chapter 01 · 404 Se Janam</span>
+          <h3 class="story-card-title">The Birth from the Void Gap</h3>
+          <p class="story-card-desc">
+            Jab internet par koi webpage delete hota hai, uski jagah ek narm stardust vacuum banta hai, jahan se nanh sa Fourie muskurate hue paida hota hai.
+          </p>
+          <div class="story-quote-box">
+            "404 ek number nahi, ek nayi shuruaat hai. Main wahi se aaya hoon taaki koi yaad akeli na rahe."
+          </div>
+          <div class="story-meta-line">
+            Void Born · 404 Stardust · Gentle Soul · Pastel Dawn
+          </div>
+          <button type="button" class="card-audio-btn" data-sound="stardust" data-label="Playing Chapter 01 Stardust Melody">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span>Play Stardust Melody</span>
+          </button>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="story-card" id="chap-2">
+          <div class="story-card-art-wrap">
+            <img src="/assets/story/fourie_office.jpg" alt="Fourie organizing glowing memory jars and floppy disks at his cozy desk" class="story-card-img" referrerpolicy="no-referrer" />
+          </div>
+          <span class="story-card-kicker">Chapter 02 · Lost &amp; Found Office</span>
+          <h3 class="story-card-title">The Sanctuary of Lost Memories</h3>
+          <p class="story-card-desc">
+            Internet ke khoye hue panno, 3.5-inch floppies, aur chamakti kaanch ki botlon me band purani yaadon ka ek behad shaant aur meetha aashray.
+          </p>
+          <div class="story-quote-box">
+            "1999 ke GeoCities panno, purani dosti ki chats, aur khoye hue blogs ko Fourie bade pyaar se sajata hai."
+          </div>
+          <div class="story-meta-line">
+            Memory Jars · Warm CRT Glow · GeoCities 1999 · Safe Keeping
+          </div>
+          <button type="button" class="card-audio-btn" data-sound="dialup" data-label="Playing Chapter 02 Dial-up Nostalgia">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span>Play Dial-Up Nostalgia</span>
+          </button>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="story-card" id="chap-3">
+          <div class="story-card-art-wrap">
+            <img src="/assets/story/fourie_cradle.jpg" alt="Little companion sleeping peacefully on a pink cloud under a crescent moon" class="story-card-img" referrerpolicy="no-referrer" />
+          </div>
+          <span class="story-card-kicker">Chapter 03 · Lori Ki Mithas</span>
+          <h3 class="story-card-title">The Cloud Lullaby Cradle</h3>
+          <p class="story-card-desc">
+            Raat ko jab internet shaant ho jaata hai, narm gulabi baadalon ke palne me meethi lori gungunati hai, jahan har thaka musafir sukoon paata hai.
+          </p>
+          <div class="story-quote-box">
+            "Uski lori banti hai puraane 56K modem ki meethi dhun se—wohi aawaz jo kabhi duniya ko jodti thi."
+          </div>
+          <div class="story-meta-line">
+            Pink Cloud Cradle · 56K Lullaby · Sweet Slumber · Starry Night
+          </div>
+          <button type="button" class="card-audio-btn" data-sound="lullaby" data-label="Playing Chapter 03 Cloud Lullaby Chime">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span>Play Lullaby Chime</span>
+          </button>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="story-card" id="chap-4">
+          <div class="story-card-art-wrap">
+            <img src="/assets/story/fourie_koko_nursery.svg" alt="Baby panda Koko holding a glowing 404 star inside the sunlit golden-hour nursery" class="story-card-img" referrerpolicy="no-referrer" />
+          </div>
+          <span class="story-card-kicker">Chapter 04 · Koko Ki Dosti</span>
+          <h3 class="story-card-title">The Sunlit Nursery &amp; Koko's Voice</h3>
+          <p class="story-card-desc">
+            Jab subah ki sunehri dhoop nursery me aati hai, Fourie apni chamakti yaadon ka taara nanhay panda Koko ko deta hai—jo har bhasha me pyaar se baat karta hai aur khilkhila kar hansta hai.
+          </p>
+          <div class="story-quote-box">
+            "Jab tum bolte ho, Koko apni meethi aawaz me jawab deta hai—kyunki is 404 Sanctuary me har aawaz aur har dosti hamesha zinda rehti hai."
+          </div>
+          <div class="story-meta-line">
+            Golden Sunset Nursery · Baby Panda Koko · Live Voice Companion · Eternal Friendship
+          </div>
+          <button type="button" class="card-audio-btn" data-sound="giggle" data-label="Playing Chapter 04 Koko's Happy Giggle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span>Play Koko's Giggle</span>
+          </button>
+        </article>
+      </div>
+    </section>
+
+    <!-- Nursery 3D Features Section (Asymmetric Bento Grid) -->
+    <section class="portal-section" id="nursery-features">
+      <div class="section-header-group">
+        <span class="section-kicker">Interactive 3D Sanctuary · Four Experiences</span>
+        <h2 class="section-title">Inside Koko's Cozy Sunset Nursery</h2>
+        <p class="section-subtitle">
+          Crafted with warm golden-hour lighting, honey-oak floors, soft plush toys, an interactive wiggling plant, and multilingual panda speech.
+        </p>
+      </div>
+
+      <div class="features-bento-grid">
+        <div class="feature-item-card span-two">
+          <div>
+            <span class="feature-num-kicker">01. Expanded Sunset Nursery &amp; Plush Toys</span>
+            <h3 class="feature-title" style="margin-top: 8px;">Spacious Honey-Oak Room with Soft Rounded Furniture &amp; Plushies</h3>
+            <p class="feature-desc" style="margin-top: 8px;">
+              Step into an expanded sunlit 3D nursery with soft rounded corners, a bunny plushie, a honey bear plushie, cloud cushions, and an interactive potted plant that wiggles and plays a nature chime when tapped.
+            </p>
+          </div>
+          <div class="feature-meta">Real-Time Three.js Scene · 100% Rounded Soft Geometry · Interactive Plant &amp; Plushies</div>
+        </div>
+
+        <div class="feature-item-card">
+          <div>
+            <span class="feature-num-kicker">02. Multilingual Panda Voice</span>
+            <h3 class="feature-title" style="margin-top: 8px;">Talks in Any Language</h3>
+            <p class="feature-desc" style="margin-top: 8px;">
+              Koko automatically understands your language and talks back with a sweet baby panda voice and animated mouth sync.
+            </p>
+          </div>
+          <div class="feature-meta">Auto Language Detection · Hardcoded Questions</div>
+        </div>
+
+        <div class="feature-item-card">
+          <div>
+            <span class="feature-num-kicker">03. Playful Baby Care Deck</span>
+            <h3 class="feature-title" style="margin-top: 8px;">Feed, Tickle &amp; Tuck In</h3>
+            <p class="feature-desc" style="margin-top: 8px;">
+              Offer warm milk, fresh berries, or a squeaky toy, give Koko a big hug, or sing a bedtime lullaby.
+            </p>
+          </div>
+          <div class="feature-meta">6 Interactive Care Actions · Live Reactions</div>
+        </div>
+
+        <div class="feature-item-card span-two">
+          <div>
+            <span class="feature-num-kicker">04. Cursor Follow &amp; 360-Degree Inspection</span>
+            <h3 class="feature-title" style="margin-top: 8px;">Guide Koko Across the Spacious Room on Any Device</h3>
+            <p class="feature-desc" style="margin-top: 8px;">
+              Move your pointer or tap across the hardwood planks to watch Koko toddle around his plush toys and wiggling nature plants, fully responsive across mobile, tablet, and desktop.
+            </p>
+          </div>
+          <div class="feature-meta">Responsive Camera Framing · Interactive Obstacle Boops</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Grand Call to Action Banner -->
+    <section class="portal-banner-cta">
+      <div class="banner-inner">
+        <span class="banner-kicker">The Door to the Nursery is Open</span>
+        <h2 class="banner-title">Ready to Step Inside Koko's Room?</h2>
+        <p class="banner-subtitle">
+          Experience the warm sunset sanctuary in real-time 3D, tap the wiggling nature plant, cuddle the plush toys, and talk with Koko in any language.
+        </p>
+        <button class="btn-main-room-cta btn-banner-cta btn-enter-room">
+          <span>Let's Visit Koko's Room</span>
+          <svg class="cta-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Portal Footer -->
+    <footer class="portal-footer">
+      <div>Fourie 404 Sanctuary · Crafted with Three.js WebGL &amp; Web Audio Synthesis</div>
+      <div class="portal-footer-sub">Kuch kho gaya? Maine sambhal ke rakha hai · Clean Storybook Edition</div>
+    </footer>
+  </main>
+
+  <!-- ==========================================================================
+       IN-ROOM INTERACTIVE UI OVERLAY (ACTIVATED ONCE INSIDE)
+       ========================================================================== -->
+  <div class="ui-overlay" id="ui-overlay" style="opacity: 0;">
+    <!-- Top Bar -->
+    <header class="top-bar">
+      <!-- Top Left: Back to Dashboard / Story Sanctuary -->
+      <button id="btn-back-to-story" class="btn-back-story interactive" title="Return to Dashboard">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back to Dashboard</span>
+      </button>
+    </header>
+
+    <!-- Speech Bubble (Anchored in 3D over Koko's head) -->
+    <div id="speech-bubble" class="visible" role="status" aria-live="polite">
+      <div class="bubble-text" id="bubble-text">*giggle* Welcome to my spacious cozy room!</div>
+    </div>
+
+    <!-- Left Circular Buttons Column (9 Circular Buttons, No Container Block) -->
+    <aside class="left-actions-panel interactive" aria-label="Character &amp; Room Controls">
+      <!-- 1. Walk -->
+      <div class="left-circle-item">
+        <button type="button" class="circle-action-btn action-btn active" data-action="walk" aria-label="Walk" title="Walk">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="13" cy="4" r="2"/><path d="M9 20l3-6 3 2 2 4M10 14l-2 6M14 9l-3 3-3-2-2 3"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Walk</span>
+      </div>
+
+      <!-- 2. Happy Dance -->
+      <div class="left-circle-item">
+        <button type="button" class="circle-action-btn action-btn" data-action="dance" aria-label="Happy Dance" title="Happy Dance">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Happy Dance</span>
+      </div>
+
+      <!-- 3. Sit Down -->
+      <div class="left-circle-item">
+        <button type="button" class="circle-action-btn action-btn" data-action="sit" aria-label="Sit Down" title="Sit Down">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 19V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14M6 12h12M6 19h12"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Sit Down</span>
+      </div>
+
+      <!-- 4. Cute Wave -->
+      <div class="left-circle-item">
+        <button type="button" class="circle-action-btn action-btn" data-action="wave" aria-label="Cute Wave" title="Cute Wave">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 11V6a2 2 0 0 0-4 0v4M14 10V4a2 2 0 0 0-4 0v7M10 10.5V6a2 2 0 0 0-4 0v8a7 7 0 0 0 14 0v-4a2 2 0 0 0-4 0"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Cute Wave</span>
+      </div>
+
+      <!-- 5. Peekaboo -->
+      <div class="left-circle-item">
+        <button type="button" class="circle-action-btn action-btn" data-action="peekaboo" aria-label="Peekaboo" title="Peekaboo">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Peekaboo</span>
+      </div>
+
+      <!-- 6. Koko's Dress-Up (Circular Button + Compact Popover) -->
+      <div class="left-circle-item">
+        <button type="button" id="btn-circle-dressup" class="circle-action-btn" aria-label="Koko's Dress-Up" title="Koko's Dress-Up">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="2.5"/>
+            <path d="M9.5 10.5C6 7 3 8 3 12s3 5 6.5 1.5"/>
+            <path d="M14.5 10.5C18 7 21 8 21 12s-3 5-6.5 1.5"/>
+            <path d="M10.5 14.2L8 20M13.5 14.2L16 20"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Koko's Dress-Up</span>
+
+        <div id="popover-dressup" class="left-popover-card">
+          <div class="dressup-header">
+            <span class="dressup-title">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="2.5"/>
+                <path d="M9.5 10.5C6 7 3 8 3 12s3 5 6.5 1.5"/>
+                <path d="M14.5 10.5C18 7 21 8 21 12s-3 5-6.5 1.5"/>
+              </svg>
+              <span>Koko's Dress-Up</span>
+            </span>
+            <span class="dressup-status" id="dressup-status">Natural Fur</span>
+          </div>
+          <div class="dressup-buttons-grid">
+            <button type="button" class="dressup-btn" data-accessory="scarf">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 8c0-2.2 3.6-4 8-4s8 1.8 8 4-3.6 4-8 4-8-1.8-8-4z"/>
+                <path d="M8 11.5v8.5a2 2 0 0 0 4 0v-8"/>
+                <path d="M13 11.5v6.5a2 2 0 0 0 3.5 0v-6.5"/>
+              </svg>
+              <span>Knitted Scarf</span>
+            </button>
+            <button type="button" class="dressup-btn" data-accessory="bow">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="2.5"/>
+                <path d="M9.5 10.5C6 7 3 8 3 12s3 5 6.5 1.5"/>
+                <path d="M14.5 10.5C18 7 21 8 21 12s-3 5-6.5 1.5"/>
+                <path d="M10.5 14.2L8 20M13.5 14.2L16 20"/>
+              </svg>
+              <span>Plush Bow</span>
+            </button>
+            <button type="button" class="dressup-btn" data-accessory="crown">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="7" r="2.5"/>
+                <circle cx="6.5" cy="9.5" r="2"/>
+                <circle cx="17.5" cy="9.5" r="2"/>
+                <path d="M4 13c2.5 2.5 13.5 2.5 16 0"/>
+              </svg>
+              <span>Flower Crown</span>
+            </button>
+            <button type="button" class="dressup-btn active" data-accessory="none">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M9 12h6"/>
+              </svg>
+              <span>Natural</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Koko's Baby Care (Circular Button + Compact Popover) -->
+      <div class="left-circle-item">
+        <button type="button" id="btn-circle-care" class="circle-action-btn" aria-label="Koko's Baby Care" title="Koko's Baby Care">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 2h8M9 2v3h6V2M8 9l-2 3v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8l-2-3H8z"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip">Koko's Baby Care</span>
+
+        <div id="popover-care" class="left-popover-card">
+          <div class="care-header">
+            <span class="care-title">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 2h8M9 2v3h6V2M8 9l-2 3v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8l-2-3H8z"/>
+              </svg>
+              <span>Koko's Baby Care</span>
+            </span>
+            <span class="care-status" id="care-status">Happy &amp; Cozy</span>
+          </div>
+          <div class="care-buttons-grid">
+            <button type="button" class="care-btn" data-care="milk">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 2h8M9 2v3h6V2M8 9l-2 3v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8l-2-3H8z"/>
+              </svg>
+              <span>Warm Milk</span>
+            </button>
+            <button type="button" class="care-btn" data-care="tickle">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l2.4 6.8L21 11l-5.3 4.6 1.6 7.4L12 19.3 6.7 23l1.6-7.4L3 11l6.6-2.2L12 2z"/>
+              </svg>
+              <span>Tickle</span>
+            </button>
+            <button type="button" class="care-btn" data-care="berry">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a9 9 0 0 1 9 9c0 6-9 11-9 11S3 17 3 11a9 9 0 0 1 9-9z"/><path d="M12 2v7"/>
+              </svg>
+              <span>Sweet Berry</span>
+            </button>
+            <button type="button" class="care-btn" data-care="toy">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span>Squeaky Toy</span>
+            </button>
+            <button type="button" class="care-btn" data-care="lullaby">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+              <span>Lullaby</span>
+            </button>
+            <button type="button" class="care-btn" data-care="hug">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              </svg>
+              <span>Big Hug</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Mic (Real-Time Gemini Live Voice Conversation) -->
+      <div class="left-circle-item">
+        <button type="button" id="btn-verbal-mic" class="circle-action-btn" aria-label="Gemini Live Voice Conversation — Speak to Koko" title="Gemini Live Voice Conversation">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+        <span class="circle-btn-tooltip" id="verbal-mic-title">Live Voice</span>
+
+        <div id="popover-live-voice" class="left-popover-card">
+          <div class="care-header">
+            <span class="care-title">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              </svg>
+              <span>Live Voice Studio</span>
+            </span>
+            <span class="care-status" id="live-voice-status">Ready</span>
+          </div>
+          <div class="dressup-buttons-grid" style="margin-bottom: 8px;">
+            <button type="button" class="dressup-btn live-voice-select active" data-voice="Puck">
+              <span>Puck (Playful)</span>
+            </button>
+            <button type="button" class="dressup-btn live-voice-select" data-voice="Zephyr">
+              <span>Zephyr (Warm)</span>
+            </button>
+            <button type="button" class="dressup-btn live-voice-select" data-voice="Kore">
+              <span>Kore (Bright)</span>
+            </button>
+            <button type="button" class="dressup-btn live-voice-select" data-voice="Charon">
+              <span>Charon (Calm)</span>
+            </button>
+          </div>
+          <button type="button" id="btn-live-session-toggle" class="care-btn" style="width: 100%; background: rgba(99, 102, 241, 0.28); border-color: rgba(129, 140, 248, 0.5); color: #fff;">
+            <span id="btn-live-session-label">Start Live Conversation</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right Control Column -->
+    <aside class="right-tools-col interactive">
+      <div class="tool-item active" id="tool-voice">
+        <span class="tool-label">Baby Sounds</span>
+        <div class="tool-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tool-item" id="tool-expressions">
+        <span class="tool-label">Giggles</span>
+        <div class="tool-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="9" r="1" fill="currentColor"/><circle cx="15" cy="9" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tool-item active" id="tool-follow">
+        <span class="tool-label">Follow Cursor</span>
+        <div class="tool-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tool-item" id="tool-night">
+        <span class="tool-label" id="tool-night-label">Night Mode</span>
+        <div class="tool-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="tool-item" id="tool-room">
+        <span class="tool-label">360 Orbit</span>
+        <div class="tool-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Bottom Talk-to-Koko (Poco) Voice & Chat Dock -->
+    <div class="koko-chat-dock interactive" id="koko-chat-dock">
+      <div class="koko-quick-chips" aria-label="Quick Prompts">
+        <button type="button" class="koko-chip-btn" data-prompt="Hi Koko! Who are you?">Hi Koko!</button>
+        <button type="button" class="koko-chip-btn" data-prompt="Drink your warm milk from your bottle!">Warm Milk</button>
+        <button type="button" class="koko-chip-btn" data-prompt="Eat a sweet fresh berry!">Sweet Berry</button>
+        <button type="button" class="koko-chip-btn" data-prompt="Do a happy dance for me!">Happy Dance</button>
+        <button type="button" class="koko-chip-btn" data-prompt="Sing me a sweet bedtime lullaby">Sing a Lullaby</button>
+        <button type="button" class="koko-chip-btn" data-prompt="Put on your cozy knitted scarf!">Wear Scarf</button>
+      </div>
+      <form class="koko-chat-form" id="koko-chat-form" autocomplete="off">
+        <input
+          type="text"
+          id="koko-chat-input"
+          class="koko-chat-input"
+          placeholder="Talk or type to Koko (Poco) in any language..."
+          aria-label="Message Koko"
+        />
+        <button type="button" id="koko-dock-mic-btn" class="koko-dock-btn" title="Speak with microphone" aria-label="Speak with microphone">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+          </svg>
+        </button>
+        <button type="submit" id="koko-chat-send" class="koko-dock-btn send-btn" title="Send message to Koko" aria-label="Send message to Koko">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+<!-- Three.js Scene Implementation -->
+  <script type="module" src="/src/kokoRoomApp.js"></script>
+</body>
+</html>

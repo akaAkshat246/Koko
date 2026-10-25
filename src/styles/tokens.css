@@ -1,0 +1,90 @@
+:root {
+  /* Fourie Sanctuary Baby Pink & Contrasting Velvet Plum Palette */
+  --bg-oled: #0d0614;
+  --bg-surface: #160c20;
+  --bg-card: #20112c;
+  --bg-card-hover: #2b173a;
+
+  --border-dim: rgba(255, 182, 217, 0.12);
+  --border-bright: rgba(255, 182, 217, 0.28);
+
+  --shine-pink: #f472b6;
+  --shine-pink-soft: rgba(244, 114, 182, 0.16);
+  --shine-rose: #ff3388;
+  --shine-mint: #5eead4;
+  --shine-amber: #fde047;
+  --shine-purple: #c084fc;
+  --shine-crimson: #ff3366;
+  --shine-green: #f472b6;
+
+  --text-main: #fff0f7;
+  --text-muted: #d8b4c8;
+  --text-dim: #8b6880;
+
+  /* Void & Surface mapping */
+  --void-bg: #0d0614;
+  --void-deep: #08030c;
+  --void-card: #160c20;
+  --void-border: rgba(255, 182, 217, 0.12);
+
+  /* Window & Card tokens */
+  --win-header: #0e1117;
+  --win-header-active: #131722;
+  --win-surface: #090b10;
+  --win-card: #0e1117;
+  --win-border: rgba(255, 255, 255, 0.12);
+  --win-shadow: 0 24px 60px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.1);
+
+  --pixel: "Press Start 2P", monospace;
+  --vt: "VT323", monospace;
+  --display: "Space Grotesk", sans-serif;
+  --sans: "Space Grotesk", "Inter", -apple-system, sans-serif;
+  --serif: "Newsreader", Georgia, serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Sizing tokens */
+  --fourie-size: 215px;
+  --marquee-speed: 26s;
+  --window-chrome: block;
+}
+
+/* Day Mode / High Contrast Matrix Day */
+body[data-theme="day"] {
+  --bg-oled: #08090d;
+  --bg-surface: #0f121a;
+  --bg-card: #151924;
+  --void-bg: #08090d;
+  --void-deep: #050608;
+  --void-card: #0f121a;
+  --void-border: rgba(255, 255, 255, 0.12);
+  --win-surface: #0f121a;
+  --win-header: #151924;
+}
+
+/* Chaos Mode - screen shape responsive sizing */
+body[data-shape="pocket"] {
+  --fourie-size: 85px;
+  --marquee-speed: 16s;
+  --window-chrome: none;
+  font-size: 13px;
+}
+
+body[data-shape="phone"] {
+  --fourie-size: 115px;
+  --marquee-speed: 20s;
+}
+
+body[data-shape="tablet"] {
+  --fourie-size: 165px;
+  --marquee-speed: 24s;
+}
+
+body[data-shape="desktop"] {
+  --fourie-size: 215px;
+  --marquee-speed: 32s;
+}
+
+body[data-shape="cinema"] {
+  --fourie-size: 245px;
+  --marquee-speed: 38s;
+}
